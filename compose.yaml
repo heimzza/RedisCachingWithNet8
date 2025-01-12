@@ -1,0 +1,6 @@
+﻿services:
+  rediscachingwithnet8:
+    image: rediscachingwithnet8
+    build:
+      context: .
+      dockerfile: Dockerfile

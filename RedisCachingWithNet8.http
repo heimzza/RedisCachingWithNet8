@@ -1,0 +1,6 @@
+@RedisCachingWithNet8_HostAddress = http://localhost:5126
+
+GET {{RedisCachingWithNet8_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
