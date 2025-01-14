@@ -8,11 +8,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddStackExchangeRedisCache(option =>
-{
-    option.Configuration = builder.Configuration.GetConnectionString("redis");
-    option.InstanceName = "Cars_";
-});
+// builder.Services.AddStackExchangeRedisCache(option =>
+// {
+//     option.Configuration = builder.Configuration.GetConnectionString("redis");
+//     option.InstanceName = "Cars_";
+// });
 
 var app = builder.Build();
 

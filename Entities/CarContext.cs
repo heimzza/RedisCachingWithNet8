@@ -18,6 +18,7 @@ public class CarContext: DbContext
 
 public class Car(string brand, string model, string color, int year)
 {
+    public int Id { get; set; }
     public string Brand { get; set; } = brand;
     public string Model { get; set; } = model;
     public string Color { get; set; } = color;
