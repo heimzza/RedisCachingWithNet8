@@ -1,18 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using RedisCachingWithNet8.Entities;
+using RedisCachingWithNet8.Services.Caching;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// builder.Services.AddDbContext<>()
+builder.Services.AddDbContext<CarContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddStackExchangeRedisCache(option =>
+{
+    option.Configuration = builder.Configuration.GetConnectionString("redis");
+    option.InstanceName = "Cars_";
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddStackExchangeRedisCache(option =>
-// {
-//     option.Configuration = builder.Configuration.GetConnectionString("redis");
-//     option.InstanceName = "Cars_";
-// });
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 var app = builder.Build();
 
