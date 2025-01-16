@@ -4,8 +4,8 @@ using RedisCachingWithNet8.Services.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<CarContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+// builder.Services.AddDbContext<CarContext>(options =>
+//     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddStackExchangeRedisCache(option =>
 {
