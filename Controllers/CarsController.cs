@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RedisCachingWithNet8.Entities;
 using RedisCachingWithNet8.Services.Caching;
+using RedisCachingWithNet8.Services.Db;
 
 namespace RedisCachingWithNet8.Controllers;
 
@@ -8,23 +9,19 @@ namespace RedisCachingWithNet8.Controllers;
 [Route("[controller]/[action]")]
 public class CarsController : ControllerBase
 {
+    private readonly ICarService _carService;
     private readonly IRedisCacheService _cache;
 
-    public CarsController(IRedisCacheService cache)
+    public CarsController(ICarService carService, IRedisCacheService cache)
     {
+        _carService = carService;
         _cache = cache;
     }
     
     [HttpPost]
     public IActionResult Create([FromBody] Car car)
     {
-        using var context = new CarContext();
-        
-        context.Database.EnsureCreated();
-        
-        context.Cars.Add(car);
-        
-        context.SaveChanges();
+        _carService.Create(car);
         
         return Ok();
     }
@@ -51,9 +48,7 @@ public class CarsController : ControllerBase
             return Ok(car);
         }
         
-        using var context = new CarContext();
-        
-        car = context.Cars.FirstOrDefault(q => q.Id == id);
+        car = _carService.GetById(id);
 
         if (car is not null)
         {
@@ -75,9 +70,7 @@ public class CarsController : ControllerBase
             return Ok(cars);
         }   
         
-        using var context = new CarContext();
-        
-        cars = context.Cars.ToList();
+        cars = _carService.GetAll();
         
         _cache.SetData<IEnumerable<Car>>("cars", cars);
         

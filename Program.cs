@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using RedisCachingWithNet8.Entities;
 using RedisCachingWithNet8.Services.Caching;
+using RedisCachingWithNet8.Services.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddDbContext<CarContext>(options =>
-//     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<CarContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddStackExchangeRedisCache(option =>
 {
@@ -18,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 var app = builder.Build();

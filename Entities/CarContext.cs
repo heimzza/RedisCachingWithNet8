@@ -5,13 +5,13 @@ namespace RedisCachingWithNet8.Entities;
 public class CarContext: DbContext
 {
     public DbSet<Car> Cars { get; set; }
-    private string DbPath { get; }
+    private static string DbPath => "cars.db";
 
-    public CarContext()
+    public CarContext(DbContextOptions<CarContext> options) : base(options)
     {
-        DbPath = "cars.db";
+        
     }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 }
